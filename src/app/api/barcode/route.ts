@@ -23,6 +23,7 @@ export async function GET(request: Request) {
     );
   }
 
+  // Server-side SVG generation keeps print scaling consistent across browsers.
   const svg = await bwipjs.toBuffer({
     bcid: "code128",
     text: parsed.data.text,
