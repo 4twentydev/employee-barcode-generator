@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Employee Barcode Labels
 
-## Getting Started
+Internal web app for creating 3" x 2" Code 128 barcode labels and managing employees.
 
-First, run the development server:
+## Stack
+- Next.js 16 (App Router), Tailwind CSS v4
+- Neon Postgres + Drizzle ORM
+- Zod validation
+- Framer Motion for subtle UI animation
 
+## Local Setup
+1) Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2) Configure environment
+```bash
+cp .env.example .env.local
+```
+Set `DATABASE_URL` in `.env.local` (Neon connection string).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3) Run migrations
+```bash
+pnpm db:push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4) Seed data
+```bash
+pnpm db:seed
+```
 
-## Learn More
+5) Start dev server
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
+- `pnpm dev` - start dev server
+- `pnpm build` - production build
+- `pnpm start` - start production server
+- `pnpm lint` - lint check
+- `pnpm db:generate` - generate migrations from schema
+- `pnpm db:push` - push schema to database
+- `pnpm db:seed` - seed sample employees
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database
+Schema lives in `db/schema.ts`. Migrations are stored in `db/migrations`. The seed script is `scripts/seed.ts`.
 
-## Deploy on Vercel
+## Printing
+The print-only route lives at `/print/[id]` and enforces a 3" x 2" landscape label via `@page` rules. Use the “Print label” button in `/label` to open the print dialog.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy (Vercel)
+1) Push the repo to GitHub.
+2) Create a new Vercel project from the repo.
+3) Add `DATABASE_URL` to Vercel Environment Variables.
+4) Deploy the project.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Custom Domain
+1) In Vercel, add the domain `employees.4twenty.dev`.
+2) Update DNS to point to Vercel.
+3) Verify SSL and propagation in Vercel before going live.
