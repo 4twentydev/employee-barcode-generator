@@ -4,11 +4,9 @@ import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
 import { employeeSchema } from "@/lib/validation";
 
-type RouteContext = {
-  params: Promise<{ id: string }>;
-};
+type RouteParams = { params: Promise<{ id: string }> };
 
-export async function GET(_: NextRequest, { params }: RouteContext) {
+export async function GET(_: NextRequest, { params }: RouteParams) {
   const { id } = await params;
   const [employee] = await db
     .select()
@@ -22,7 +20,7 @@ export async function GET(_: NextRequest, { params }: RouteContext) {
   return NextResponse.json({ employee });
 }
 
-export async function PATCH(request: NextRequest, { params }: RouteContext) {
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
   const { id } = await params;
   const payload = await request.json();
   const parsed = employeeSchema.safeParse(payload);
@@ -67,7 +65,7 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
   }
 }
 
-export async function DELETE(_: NextRequest, { params }: RouteContext) {
+export async function DELETE(_: NextRequest, { params }: RouteParams) {
   const { id } = await params;
   const [updated] = await db
     .update(employees)
