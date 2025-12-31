@@ -22,6 +22,17 @@ export async function GET(request: Request) {
     );
   }
 
+  const normalizedText = parsed.data.text
+    .replace(/^[^0-9A-Za-z]+/, "")
+    .replace(/\s+/g, "");
+
+  if (!normalizedText) {
+    return NextResponse.json(
+      { error: "Barcode text is required." },
+      { status: 400 }
+    );
+  }
+
   // Server-side SVG generation keeps print scaling consistent across browsers.
   type BwipJsSvgOptions = Parameters<typeof bwipjs.toBuffer>[0];
   const bwipjsWithSvg = bwipjs as typeof bwipjs & {
@@ -30,8 +41,8 @@ export async function GET(request: Request) {
 
   const svg = bwipjsWithSvg.toSVG({
     bcid: "code128",
-    text: parsed.data.text,
-    scale: 5,
+    text: normalizedText,
+    scalet: 5,
     height: 10,
     includetext: false,
     textxalign: "center",
