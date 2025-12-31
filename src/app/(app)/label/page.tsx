@@ -118,6 +118,7 @@ function LabelInput({ index, selection, onSelect }: LabelInputProps) {
 }
 
 export default function LabelPage() {
+  const { pushToast } = useToast();
   const [labelCount, setLabelCount] = useState(1);
   const [selections, setSelections] = useState<Array<Employee | null>>([null]);
 
@@ -144,7 +145,12 @@ export default function LabelPage() {
     const url = `/print?${params.toString()}`;
     const opened = window.open(url, "_blank", "noopener,noreferrer");
     if (!opened) {
-      window.location.assign(url);
+      pushToast({
+        title: "Allow pop-ups to print labels",
+        description:
+          "Your browser blocked the print window. Allow pop-ups for this site and try again.",
+        variant: "error",
+      });
     }
   };
   const labelEmployee = useMemo(
