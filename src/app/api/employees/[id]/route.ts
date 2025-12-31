@@ -1,18 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
 import { employeeSchema } from "@/lib/validation";
 
 type RouteContext = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export async function GET(_: Request, { params }: RouteContext) {
+export async function GET(_: NextRequest, { params }: RouteContext) {
+  const { id } = await params;
   const [employee] = await db
     .select()
     .from(employees)
-    .where(eq(employees.id, params.id));
+    .where(eq(employees.id, id));
 
   if (!employee) {
     return NextResponse.json({ error: "Employee not found." }, { status: 404 });
@@ -21,7 +22,8 @@ export async function GET(_: Request, { params }: RouteContext) {
   return NextResponse.json({ employee });
 }
 
-export async function PATCH(request: Request, { params }: RouteContext) {
+export async function PATCH(request: NextRequest, { params }: RouteContext) {
+  const { id } = await params;
   const payload = await request.json();
   const parsed = employeeSchema.safeParse(payload);
 
@@ -40,7 +42,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
         employeeNumber: parsed.data.employeeNumber,
         updatedAt: new Date(),
       })
-      .where(eq(employees.id, params.id))
+      .where(eq(employees.id, id))
       .returning();
 
     if (!updated) {
@@ -65,11 +67,12 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   }
 }
 
-export async function DELETE(_: Request, { params }: RouteContext) {
+export async function DELETE(_: NextRequest, { params }: RouteContext) {
+  const { id } = await params;
   const [updated] = await db
     .update(employees)
     .set({ active: false, updatedAt: new Date() })
-    .where(eq(employees.id, params.id))
+    .where(eq(employees.id, id))
     .returning();
 
   if (!updated) {
