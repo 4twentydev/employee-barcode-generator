@@ -151,7 +151,27 @@ export default function LabelPage() {
           "Your browser blocked the print window. Allow pop-ups for this site and try again.",
         variant: "error",
       });
+      return;
     }
+
+    const tryPrint = () => {
+      if (opened.closed) return;
+      opened.focus();
+      opened.print();
+    };
+
+    opened.addEventListener("load", tryPrint, { once: true });
+
+    const poll = window.setInterval(() => {
+      if (opened.closed) {
+        window.clearInterval(poll);
+        return;
+      }
+      if (opened.document.readyState === "complete") {
+        window.clearInterval(poll);
+        tryPrint();
+      }
+    }, 250);
   };
   const labelEmployee = useMemo(
     () => selections.find(Boolean) ?? null,
