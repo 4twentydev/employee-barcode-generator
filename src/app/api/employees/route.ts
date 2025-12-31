@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { and, eq, ilike } from "drizzle-orm";
+import { and, eq, ilike, or } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
+import { formatEmployeeName } from "@/lib/format";
 import { employeeSchema } from "@/lib/validation";
 
 export async function GET(request: Request) {
@@ -11,7 +12,17 @@ export async function GET(request: Request) {
 
   const filters = [];
   if (query) {
-    filters.push(ilike(employees.name, `%${query}%`));
+    const formattedQuery = formatEmployeeName(query);
+    if (formattedQuery.toLowerCase() === query.toLowerCase()) {
+      filters.push(ilike(employees.name, `%${query}%`));
+    } else {
+      filters.push(
+        or(
+          ilike(employees.name, `%${query}%`),
+          ilike(employees.name, `%${formattedQuery}%`)
+        )
+      );
+    }
   }
   if (status === "active") {
     filters.push(eq(employees.active, true));
@@ -44,7 +55,7 @@ export async function POST(request: Request) {
     const [created] = await db
       .insert(employees)
       .values({
-        name: parsed.data.name,
+        name: formatEmployeeName(parsed.data.name),
         employeeNumber: parsed.data.employeeNumber,
       })
       .returning();

@@ -2,15 +2,19 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
-import PrintAuto from "@/components/print-auto";
+import PrintSheet from "../print-sheet";
 import "../print.css";
 
 type PrintPageProps = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
+  searchParams?: { count?: string };
 };
 
-export default async function PrintPage({ params }: PrintPageProps) {
-  const { id } = await params;
+export default async function PrintPage({
+  params,
+  searchParams,
+}: PrintPageProps) {
+  const { id } = params;
   const [employee] = await db
     .select()
     .from(employees)
@@ -20,29 +24,15 @@ export default async function PrintPage({ params }: PrintPageProps) {
     notFound();
   }
 
-  return (
-    <div className="print-surface font-sans text-zinc-900">
-      <PrintAuto />
-      <div className="flex h-full w-full flex-col items-center justify-center gap-1 text-center">
-        <div>
-          <p className="text-xs uppercase tracking-[0.14em] text-zinc-500">
-            Employee
-          </p>
-          <h2 className="text-lg font-semibold leading-tight">
-            {employee.name}
-          </h2>
-          <p className="text-xs text-zinc-700">{employee.employeeNumber}</p>
-        </div>
-        <div className="w-full max-w-[2.3in]">
-          <img
-            src={`/api/barcode?text=${encodeURIComponent(
-              employee.employeeNumber
-            )}`}
-            alt={`Barcode for ${employee.employeeNumber}`}
-            className="h-auto w-full"
-          />
-        </div>
-      </div>
-    </div>
-  );
+  const requestedCount = Number(searchParams?.count ?? "1");
+  const labelCount = Number.isFinite(requestedCount)
+    ? Math.min(8, Math.max(1, requestedCount))
+    : 1;
+
+  const employeesToPrint = Array.from({ length: labelCount }, () => ({
+    name: employee.name,
+    employeeNumber: employee.employeeNumber,
+  }));
+
+  return <PrintSheet employees={employeesToPrint} />;
 }

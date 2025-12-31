@@ -23,6 +23,7 @@ export default function PrintAuto() {
       }
       if (cancelled) return;
       timeoutId = window.setTimeout(() => {
+        window.focus();
         window.print();
       }, 300);
     };
@@ -47,5 +48,16 @@ export default function PrintAuto() {
     };
   }, []);
 
-  return null;
+  return (
+    <div className="mb-4 flex flex-col items-end gap-2 text-xs text-zinc-500 print:hidden">
+      <button
+        type="button"
+        onClick={() => window.print()}
+        className="rounded-full bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-black"
+      >
+        Print labels
+      </button>
+      <p>If the print dialog did not open, use the button above.</p>
+    </div>
+  );
 }
