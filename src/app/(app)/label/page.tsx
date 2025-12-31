@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/toast";
-import { formatEmployeeName } from "@/lib/format";
+import { formatEmployeeBarcode, formatEmployeeName } from "@/lib/format";
 
 type Employee = {
   id: string;
@@ -140,6 +140,9 @@ export default function LabelPage() {
   };
 
   const totalLabels = sheetSettings.columns * sheetSettings.rows;
+  const barcodeValue = labelEmployee
+    ? formatEmployeeBarcode(labelEmployee.employeeNumber)
+    : null;
 
   return (
     <div className="grid gap-8 xl:grid-cols-[1.1fr_1fr_1.2fr]">
@@ -247,15 +250,15 @@ export default function LabelPage() {
                       {formatEmployeeName(labelEmployee.name)}
                     </p>
                     <p className="text-sm text-zinc-600">
-                      {labelEmployee.employeeNumber}
+                      {barcodeValue}
                     </p>
                   </div>
                   <div className="w-full max-w-[220px]">
                     <img
                       src={`/api/barcode?text=${encodeURIComponent(
-                        labelEmployee.employeeNumber
+                        barcodeValue ?? ""
                       )}`}
-                      alt={`Barcode for ${labelEmployee.employeeNumber}`}
+                      alt={`Barcode for ${barcodeValue ?? ""}`}
                       className="w-full"
                     />
                   </div>

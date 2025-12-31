@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
 import PrintAuto from "@/components/print-auto";
-import { formatEmployeeName } from "@/lib/format";
+import { formatEmployeeBarcode, formatEmployeeName } from "@/lib/format";
 import "../print.css";
 
 type PrintPageProps = {
@@ -21,6 +21,8 @@ export default async function PrintPage({ params }: PrintPageProps) {
     notFound();
   }
 
+  const barcodeValue = formatEmployeeBarcode(employee.employeeNumber);
+
   return (
     <div className="print-surface font-sans text-zinc-900">
       <PrintAuto />
@@ -32,14 +34,12 @@ export default async function PrintPage({ params }: PrintPageProps) {
           <h2 className="text-lg font-semibold leading-tight">
             {formatEmployeeName(employee.name)}
           </h2>
-          <p className="text-xs text-zinc-700">{employee.employeeNumber}</p>
+          <p className="text-xs text-zinc-700">{barcodeValue}</p>
         </div>
         <div className="w-full max-w-[2.3in]">
           <img
-            src={`/api/barcode?text=${encodeURIComponent(
-              employee.employeeNumber
-            )}`}
-            alt={`Barcode for ${employee.employeeNumber}`}
+            src={`/api/barcode?text=${encodeURIComponent(barcodeValue)}`}
+            alt={`Barcode for ${barcodeValue}`}
             className="h-auto w-full"
           />
         </div>

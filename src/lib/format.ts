@@ -16,3 +16,6 @@ export const formatEmployeeName = (name: string): string => {
   const firstMiddle = parts.slice(0, -1).join(" ");
   return `${lastName}, ${firstMiddle}`;
 };
+
+export const formatEmployeeBarcode = (employeeNumber: string): string =>
+  `%$${employeeNumber}`;
