@@ -29,5 +29,10 @@ export default async function PrintPage({
     ? Math.min(8, Math.max(1, requestedCount))
     : 1;
 
-  return <PrintSheet employee={employee} labelCount={labelCount} />;
+  const employeesToPrint = Array.from({ length: labelCount }, () => ({
+    name: employee.name,
+    employeeNumber: employee.employeeNumber,
+  }));
+
+  return <PrintSheet employees={employeesToPrint} />;
 }

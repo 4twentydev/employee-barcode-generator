@@ -7,12 +7,10 @@ type Employee = {
 };
 
 type PrintSheetProps = {
-  employee: Employee;
-  labelCount: number;
+  employees: Employee[];
 };
 
-export default function PrintSheet({ employee, labelCount }: PrintSheetProps) {
-  const barcodeValue = formatEmployeeBarcode(employee.employeeNumber);
+export default function PrintSheet({ employees }: PrintSheetProps) {
   const labelSlots = Array.from({ length: 8 });
 
   return (
@@ -20,7 +18,11 @@ export default function PrintSheet({ employee, labelCount }: PrintSheetProps) {
       <PrintAuto />
       <div className="print-grid">
         {labelSlots.map((_, index) => {
-          const isActive = index < labelCount;
+          const employee = employees[index];
+          const barcodeValue = employee
+            ? formatEmployeeBarcode(employee.employeeNumber)
+            : null;
+          const isActive = Boolean(employee);
           return (
             <div
               key={`label-${index}`}
