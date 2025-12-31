@@ -33,6 +33,9 @@ export async function GET(request: Request) {
     );
   }
 
+  const isNumeric = /^[0-9]+$/.test(normalizedText);
+  const useCode128C = isNumeric && normalizedText.length % 2 === 0;
+
   // Server-side SVG generation keeps print scaling consistent across browsers.
   type BwipJsSvgOptions = Parameters<typeof bwipjs.toBuffer>[0];
   const bwipjsWithSvg = bwipjs as typeof bwipjs & {
@@ -40,7 +43,7 @@ export async function GET(request: Request) {
   };
 
   const svg = bwipjsWithSvg.toSVG({
-    bcid: "code128",
+    bcid: useCode128C ? "code128c" : "code128",
     text: normalizedText,
     scale: 5,
     height: 10,
