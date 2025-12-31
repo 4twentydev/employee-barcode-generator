@@ -6,8 +6,7 @@ const barcodeQuery = z.object({
   text: z
     .string()
     .trim()
-    .min(1, "Barcode text is required.")
-    .regex(/^\d+$/, "Barcode text must be numeric."),
+    .min(1, "Barcode text is required."),
 });
 
 export async function GET(request: Request) {
@@ -30,7 +29,7 @@ export async function GET(request: Request) {
   };
 
   const svg = bwipjsWithSvg.toSVG({
-    bcid: "code39",
+    bcid: "code128",
     text: parsed.data.text,
     scale: 3,
     height: 12,

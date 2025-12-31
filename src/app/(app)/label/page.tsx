@@ -147,6 +147,16 @@ export default function LabelPage() {
             Print label
           </button>
         </div>
+        <div className="mt-4 rounded-2xl border border-black/10 bg-zinc-50 px-4 py-3 text-xs text-zinc-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+            Kyocera TASKalfa 4003i
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-4">
+            <li>Paper size: Letter (8.5&quot; × 11&quot;)</li>
+            <li>Scale: 100% (disable fit-to-page)</li>
+            <li>Print in color off (monochrome)</li>
+          </ul>
+        </div>
       </motion.section>
 
       <motion.section
