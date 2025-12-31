@@ -2,23 +2,24 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
-import PrintSheet from "../print-sheet";
-import "../print.css";
+import PrintSheet from "./print-sheet";
+import "./print.css";
 
 type PrintPageProps = {
-  params: { id: string };
-  searchParams?: { count?: string };
+  searchParams?: { id?: string; count?: string };
 };
 
-export default async function PrintPage({
-  params,
-  searchParams,
-}: PrintPageProps) {
-  const { id } = params;
+export default async function PrintPage({ searchParams }: PrintPageProps) {
+  const employeeId = searchParams?.id;
+
+  if (!employeeId) {
+    notFound();
+  }
+
   const [employee] = await db
     .select()
     .from(employees)
-    .where(eq(employees.id, id));
+    .where(eq(employees.id, employeeId));
 
   if (!employee) {
     notFound();

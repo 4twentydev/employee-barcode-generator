@@ -73,7 +73,7 @@ export default function LabelPage() {
 
   const handlePrint = () => {
     if (!selected) return;
-    const url = `/print/${selected.id}?count=${labelCount}`;
+    const url = `/print?id=${selected.id}&count=${labelCount}`;
     const opened = window.open(url, "_blank", "noopener,noreferrer");
     if (!opened) {
       window.location.assign(url);
