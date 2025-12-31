@@ -24,7 +24,7 @@ export async function GET(request: Request) {
   }
 
   // Server-side SVG generation keeps print scaling consistent across browsers.
-  const svg = await bwipjs.toBuffer({
+  const svg = bwipjs.toSVG({
     bcid: "code128",
     text: parsed.data.text,
     scale: 3,
@@ -35,9 +35,7 @@ export async function GET(request: Request) {
     paddingheight: 0,
   });
 
-  const body = new Uint8Array(svg);
-
-  return new NextResponse(body, {
+  return new NextResponse(svg, {
     headers: {
       "Content-Type": "image/svg+xml",
       "Cache-Control": "no-store",

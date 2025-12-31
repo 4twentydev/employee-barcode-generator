@@ -6,14 +6,15 @@ import PrintAuto from "@/components/print-auto";
 import "../print.css";
 
 type PrintPageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function PrintPage({ params }: PrintPageProps) {
+  const { id } = await params;
   const [employee] = await db
     .select()
     .from(employees)
-    .where(eq(employees.id, params.id));
+    .where(eq(employees.id, id));
 
   if (!employee) {
     notFound();

@@ -67,7 +67,7 @@ export default function LabelPage() {
 
   const handlePrint = () => {
     if (!selected) return;
-    window.open(`/print/${selected.id}`, "_blank", "noopener,noreferrer");
+    window.location.assign(`/print/${selected.id}`);
   };
 
   return (
