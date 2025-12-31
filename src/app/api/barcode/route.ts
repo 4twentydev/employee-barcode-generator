@@ -42,7 +42,7 @@ export async function GET(request: Request) {
   const svg = bwipjsWithSvg.toSVG({
     bcid: "code128",
     text: normalizedText,
-    scale: 5,
+    scalet: 5,
     height: 10,
     includetext: false,
     textxalign: "center",
