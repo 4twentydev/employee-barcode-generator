@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
 import PrintAuto from "@/components/print-auto";
+import { formatEmployeeName } from "@/lib/format";
 import "../print.css";
 
 type PrintPageProps = {
@@ -29,7 +30,7 @@ export default async function PrintPage({ params }: PrintPageProps) {
             Employee
           </p>
           <h2 className="text-lg font-semibold leading-tight">
-            {employee.name}
+            {formatEmployeeName(employee.name)}
           </h2>
           <p className="text-xs text-zinc-700">{employee.employeeNumber}</p>
         </div>

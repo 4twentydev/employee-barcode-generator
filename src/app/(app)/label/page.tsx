@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/toast";
+import { formatEmployeeName } from "@/lib/format";
 
 type Employee = {
   id: string;
@@ -65,7 +66,7 @@ export default function LabelPage() {
 
   const handleSelect = (employee: Employee) => {
     setSelected(employee);
-    setQuery(employee.name);
+    setQuery(formatEmployeeName(employee.name));
     setEmployees([]);
   };
 
@@ -121,7 +122,7 @@ export default function LabelPage() {
                     className="flex w-full flex-col rounded-xl px-3 py-2 text-left hover:bg-zinc-50"
                   >
                     <span className="text-sm font-semibold text-zinc-900">
-                      {employee.name}
+                      {formatEmployeeName(employee.name)}
                     </span>
                     <span className="text-xs text-zinc-500">
                       #{employee.employeeNumber}
@@ -181,7 +182,7 @@ export default function LabelPage() {
                       Employee
                     </p>
                     <p className="text-lg font-semibold text-zinc-900">
-                      {labelEmployee.name}
+                      {formatEmployeeName(labelEmployee.name)}
                     </p>
                     <p className="text-sm text-zinc-600">
                       {labelEmployee.employeeNumber}
