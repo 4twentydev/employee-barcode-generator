@@ -11,13 +11,23 @@ type Employee = {
   employeeNumber: string;
 };
 
-export default function LabelPage() {
+type LabelInputProps = {
+  index: number;
+  selection: Employee | null;
+  onSelect: (employee: Employee | null) => void;
+};
+
+function LabelInput({ index, selection, onSelect }: LabelInputProps) {
   const { pushToast } = useToast();
   const [query, setQuery] = useState("");
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [selected, setSelected] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [labelCount, setLabelCount] = useState(1);
+
+  useEffect(() => {
+    if (selection) {
+      setQuery(formatEmployeeName(selection.name));
+    }
+  }, [selection]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -25,7 +35,7 @@ export default function LabelPage() {
       setEmployees([]);
       return () => controller.abort();
     }
-    if (selected) {
+    if (selection) {
       setEmployees([]);
       return () => controller.abort();
     }
@@ -57,31 +67,96 @@ export default function LabelPage() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [query, pushToast, selected]);
-
-  const labelEmployee = useMemo(() => {
-    if (selected) return selected;
-    if (query.trim().length === 0) return null;
-    return null;
-  }, [selected, query]);
+  }, [query, pushToast, selection]);
 
   const handleSelect = (employee: Employee) => {
-    setSelected(employee);
+    onSelect(employee);
     setQuery(formatEmployeeName(employee.name));
     setEmployees([]);
   };
 
+  return (
+    <label className="text-sm font-medium text-zinc-700">
+      Label {index + 1}
+      <div className="relative mt-2">
+        <input
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            onSelect(null);
+          }}
+          placeholder="Start typing a name..."
+          className="w-full rounded-2xl border border-black/10 px-4 py-3 text-sm focus:border-black/30 focus:outline-none"
+        />
+        {isLoading ? (
+          <span className="absolute right-4 top-3 text-xs text-zinc-400">
+            Searching...
+          </span>
+        ) : null}
+        {employees.length > 0 ? (
+          <div className="absolute z-10 mt-2 w-full rounded-2xl border border-black/10 bg-white p-2 shadow-lg">
+            {employees.map((employee) => (
+              <button
+                type="button"
+                key={employee.id}
+                onClick={() => handleSelect(employee)}
+                className="flex w-full flex-col rounded-xl px-3 py-2 text-left hover:bg-zinc-50"
+              >
+                <span className="text-sm font-semibold text-zinc-900">
+                  {formatEmployeeName(employee.name)}
+                </span>
+                <span className="text-xs text-zinc-500">
+                  #{employee.employeeNumber}
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </label>
+  );
+}
+
+export default function LabelPage() {
+  const [labelCount, setLabelCount] = useState(1);
+  const [selections, setSelections] = useState<Array<Employee | null>>([null]);
+
+  useEffect(() => {
+    setSelections((prev) => {
+      const next = prev.slice(0, labelCount);
+      while (next.length < labelCount) {
+        next.push(null);
+      }
+      return next;
+    });
+  }, [labelCount]);
+
   const handlePrint = () => {
-    if (!selected) return;
-    const url = `/print/${selected.id}?count=${labelCount}`;
+    const selectedEmployees = selections.filter(
+      (employee): employee is Employee => Boolean(employee)
+    );
+    if (selectedEmployees.length !== labelCount) return;
+    const params = new URLSearchParams();
+    params.set(
+      "ids",
+      selectedEmployees.map((employee) => employee.id).join(",")
+    );
+    const url = `/print?${params.toString()}`;
     const opened = window.open(url, "_blank", "noopener,noreferrer");
     if (!opened) {
       window.location.assign(url);
     }
   };
+  const labelEmployee = useMemo(
+    () => selections.find(Boolean) ?? null,
+    [selections]
+  );
   const barcodeValue = labelEmployee
     ? formatEmployeeBarcode(labelEmployee.employeeNumber)
     : null;
+  const canPrint =
+    selections.length > 0 &&
+    selections.every((employee) => Boolean(employee));
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] xl:gap-8">
@@ -98,48 +173,6 @@ export default function LabelPage() {
           Generate an employee barcode label
         </h2>
         <div className="mt-6 grid gap-5">
-          <label className="text-sm font-medium text-zinc-700">
-            Employee name
-          </label>
-          <div className="relative mt-2">
-            <input
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                setSelected(null);
-              }}
-              placeholder="Start typing a name..."
-              className="w-full rounded-2xl border border-black/10 px-4 py-3 text-sm focus:border-black/30 focus:outline-none"
-            />
-            {isLoading ? (
-              <span className="absolute right-4 top-3 text-xs text-zinc-400">
-                Searching...
-              </span>
-            ) : null}
-            {employees.length > 0 ? (
-              <div className="absolute z-10 mt-2 w-full rounded-2xl border border-black/10 bg-white p-2 shadow-lg">
-                {employees.map((employee) => (
-                  <button
-                    type="button"
-                    key={employee.id}
-                    onClick={() => handleSelect(employee)}
-                    className="flex w-full flex-col rounded-xl px-3 py-2 text-left hover:bg-zinc-50"
-                  >
-                    <span className="text-sm font-semibold text-zinc-900">
-                      {formatEmployeeName(employee.name)}
-                    </span>
-                    <span className="text-xs text-zinc-500">
-                      #{employee.employeeNumber}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            ) : null}
-          </div>
-          <p className="mt-3 text-xs text-zinc-500">
-            Results show active employees only. Manage inactive records in
-            Employees.
-          </p>
           <label className="grid gap-2 text-sm font-medium text-zinc-700">
             Labels to print
             <select
@@ -162,16 +195,36 @@ export default function LabelPage() {
               Prints up to 8 labels (2 columns × 4 rows) on one sheet.
             </span>
           </label>
+          <div className="grid gap-4">
+            {selections.map((selection, index) => (
+              <LabelInput
+                key={`label-input-${index}`}
+                index={index}
+                selection={selection}
+                onSelect={(employee) =>
+                  setSelections((prev) => {
+                    const next = [...prev];
+                    next[index] = employee;
+                    return next;
+                  })
+                }
+              />
+            ))}
+          </div>
+          <p className="text-xs text-zinc-500">
+            Results show active employees only. Manage inactive records in
+            Employees.
+          </p>
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={handlePrint}
-            disabled={!selected}
+            disabled={!canPrint}
             className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white hover:bg-black disabled:opacity-60"
           >
-            Print label
+            Print labels
           </button>
         </div>
       </motion.section>
