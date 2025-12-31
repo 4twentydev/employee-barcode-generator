@@ -1,0 +1,27 @@
+# Recommended for most uses
+DATABASE_URL=postgres://neondb_owner:npg_srceIUV9yz2p@ep-bold-dew-afzayt0z-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+
+# For uses requiring a connection without pgbouncer
+DATABASE_URL_UNPOOLED=postgresql://neondb_owner:npg_srceIUV9yz2p@ep-bold-dew-afzayt0z.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+
+# Parameters for constructing your own connection string
+PGHOST=ep-bold-dew-afzayt0z-pooler.c-2.us-west-2.aws.neon.tech
+PGHOST_UNPOOLED=ep-bold-dew-afzayt0z.c-2.us-west-2.aws.neon.tech
+PGUSER=neondb_owner
+PGDATABASE=neondb
+PGPASSWORD=npg_srceIUV9yz2p
+
+# Parameters for Vercel Postgres Templates
+POSTGRES_URL=postgres://neondb_owner:npg_srceIUV9yz2p@ep-bold-dew-afzayt0z-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+POSTGRES_URL_NON_POOLING=postgres://neondb_owner:npg_srceIUV9yz2p@ep-bold-dew-afzayt0z.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+POSTGRES_USER=neondb_owner
+POSTGRES_HOST=ep-bold-dew-afzayt0z-pooler.c-2.us-west-2.aws.neon.tech
+POSTGRES_PASSWORD=npg_srceIUV9yz2p
+POSTGRES_DATABASE=neondb
+POSTGRES_URL_NO_SSL=postgres://neondb_owner:npg_srceIUV9yz2p@ep-bold-dew-afzayt0z-pooler.c-2.us-west-2.aws.neon.tech/neondb
+POSTGRES_PRISMA_URL=postgres://neondb_owner:npg_srceIUV9yz2p@ep-bold-dew-afzayt0z-pooler.c-2.us-west-2.aws.neon.tech/neondb?connect_timeout=15&sslmode=require
+
+# Neon Auth environment variables for Next.js
+NEXT_PUBLIC_STACK_PROJECT_ID=049f6b6b-95f8-427e-a53b-0e19b7d3f789
+NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=pck_9zp84ja7z7ea25c83gc23yxjfwc1nj62p54eznehpg8bg
+STACK_SECRET_SERVER_KEY=ssk_r2gjwq7e71bgkegwcqqp056cktqghqpjn0zybb41gnatr
