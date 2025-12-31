@@ -16,7 +16,6 @@ export default function LabelPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [selected, setSelected] = useState<Employee | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     const controller = new AbortController();
     if (!query.trim()) {
