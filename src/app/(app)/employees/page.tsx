@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/toast";
+import { formatEmployeeName } from "@/lib/format";
 
 type Employee = {
   id: string;
@@ -70,6 +71,7 @@ export default function EmployeesPage() {
 
     const timer = setTimeout(async () => {
       try {
+        const formattedName = formatEmployeeName(name);
         const params = new URLSearchParams({ q: name, status: "all" });
         const response = await fetch(`/api/employees?${params.toString()}`, {
           signal: controller.signal,
@@ -77,7 +79,8 @@ export default function EmployeesPage() {
         const data = await response.json();
         const matches = (data.employees ?? []).filter(
           (employee: Employee) =>
-            employee.name.toLowerCase() === name.toLowerCase() &&
+            formatEmployeeName(employee.name).toLowerCase() ===
+              formattedName.toLowerCase() &&
             employee.id !== form.id
         );
         if (matches.length > 0) {
@@ -217,7 +220,7 @@ export default function EmployeesPage() {
             >
               <div>
                 <p className="text-sm font-semibold text-zinc-900">
-                  {employee.name}
+                  {formatEmployeeName(employee.name)}
                 </p>
                 <p className="text-xs text-zinc-500">
                   #{employee.employeeNumber}

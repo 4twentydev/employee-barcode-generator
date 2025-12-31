@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@db/drizzle";
 import { employees } from "@db/schema";
+import { formatEmployeeName } from "@/lib/format";
 import { employeeSchema } from "@/lib/validation";
 
 type RouteParams = { params: Promise<{ id: string }> };
@@ -36,7 +37,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const [updated] = await db
       .update(employees)
       .set({
-        name: parsed.data.name,
+        name: formatEmployeeName(parsed.data.name),
         employeeNumber: parsed.data.employeeNumber,
         updatedAt: new Date(),
       })
