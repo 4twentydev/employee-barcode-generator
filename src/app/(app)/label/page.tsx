@@ -55,7 +55,7 @@ export default function LabelPage() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [query, pushToast]);
+  }, [query, pushToast, selected]);
 
   const labelEmployee = useMemo(() => {
     if (selected) return selected;
