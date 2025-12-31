@@ -23,6 +23,10 @@ export default function LabelPage() {
       setEmployees([]);
       return () => controller.abort();
     }
+    if (selected) {
+      setEmployees([]);
+      return () => controller.abort();
+    }
 
     const timer = setTimeout(async () => {
       setIsLoading(true);
@@ -187,9 +191,6 @@ export default function LabelPage() {
                       alt={`Barcode for ${labelEmployee.employeeNumber}`}
                       className="w-full"
                     />
-                    <p className="mt-1 text-[10px] tracking-[0.2em] text-zinc-600">
-                      {labelEmployee.employeeNumber}
-                    </p>
                   </div>
                 </>
               ) : (

@@ -21,6 +21,6 @@ body {
 .print-surface {
   width: 100%;
   height: 100%;
-  padding: 0.125in;
+  padding: 0.08in;
   box-sizing: border-box;
 }
