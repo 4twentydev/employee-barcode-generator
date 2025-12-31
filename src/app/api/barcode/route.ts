@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     paddingheight: 0,
   });
 
-  return new NextResponse(svg, {
+  return new NextResponse(svg.toString("utf-8"), {
     headers: {
       "Content-Type": "image/svg+xml",
       "Cache-Control": "no-store",
