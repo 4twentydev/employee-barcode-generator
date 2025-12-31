@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 
   // Server-side SVG generation keeps print scaling consistent across browsers.
   const svg = bwipjs.toSVG({
-    bcid: "code128",
+    bcid: "code39",
     text: parsed.data.text,
     scale: 3,
     height: 12,

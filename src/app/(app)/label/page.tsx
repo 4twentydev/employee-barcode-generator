@@ -71,7 +71,11 @@ export default function LabelPage() {
 
   const handlePrint = () => {
     if (!selected) return;
-    window.location.assign(`/print/${selected.id}`);
+    const url = `/print/${selected.id}`;
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) {
+      window.location.assign(url);
+    }
   };
 
   return (
@@ -142,16 +146,6 @@ export default function LabelPage() {
           >
             Print label
           </button>
-          {selected ? (
-            <a
-              href={`/print/${selected.id}`}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-black/10 px-6 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
-            >
-              Open print view
-            </a>
-          ) : null}
         </div>
       </motion.section>
 
