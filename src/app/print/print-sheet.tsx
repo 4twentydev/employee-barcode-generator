@@ -21,7 +21,7 @@ export default function PrintSheet({ employees }: PrintSheetProps) {
           const employee = employees[index];
           const barcodeValue = employee
             ? formatEmployeeBarcode(employee.employeeNumber)
-            : null;
+            : "";
           const isActive = Boolean(employee);
           return (
             <div
