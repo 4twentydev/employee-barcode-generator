@@ -22,9 +22,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const normalizedText = parsed.data.text
-    .replace(/^[^0-9A-Za-z]+/, "")
-    .replace(/\s+/g, "");
+  const normalizedText = parsed.data.text.replace(/\s+/g, "");
 
   if (!normalizedText) {
     return NextResponse.json(
