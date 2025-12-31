@@ -128,10 +128,12 @@ export default function EmployeesPage() {
       const reload = await fetch(`/api/employees?${params.toString()}`);
       const reloadData = await reload.json();
       setEmployees(reloadData.employees ?? []);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Request failed.";
       pushToast({
         title: "Unable to save employee",
-        description: error.message,
+        description: message,
         variant: "error",
       });
     } finally {
@@ -158,10 +160,12 @@ export default function EmployeesPage() {
           item.id === employee.id ? { ...item, active: false } : item
         )
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Request failed.";
       pushToast({
         title: "Unable to deactivate",
-        description: error.message,
+        description: message,
         variant: "error",
       });
     }

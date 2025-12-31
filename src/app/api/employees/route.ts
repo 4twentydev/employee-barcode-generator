@@ -50,8 +50,13 @@ export async function POST(request: Request) {
       .returning();
 
     return NextResponse.json({ employee: created });
-  } catch (error: any) {
-    if (error?.code === "23505") {
+  } catch (error: unknown) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "23505"
+    ) {
       return NextResponse.json(
         { error: "Employee number must be unique." },
         { status: 409 }
