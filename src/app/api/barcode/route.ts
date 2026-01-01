@@ -27,7 +27,9 @@ export async function GET(req: NextRequest) {
       paddingheight: 0,
     });
 
-    return new Response(png, {
+    const body = new Uint8Array(png);
+
+    return new Response(body, {
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": "no-store",
