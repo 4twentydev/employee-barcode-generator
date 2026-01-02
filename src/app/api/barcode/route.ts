@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   const height = Number(searchParams.get("height") || "12"); // barcode height in "bwip units"
 
   if (!/^(%\$)?\d+$/.test(text)) {
-    return new Response("Invalid barcode text. Use %$ prefix or digits only.", {
+    return new Response("Invalid barcode text. Use digits or %$ prefix + digits.", {
       status: 400,
     });
   }

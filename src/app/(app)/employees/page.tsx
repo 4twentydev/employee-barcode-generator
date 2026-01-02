@@ -158,16 +158,54 @@ export default function EmployeesPage() {
         description: employee.name,
         variant: "success",
       });
-      setEmployees((prev) =>
-        prev.map((item) =>
+      setEmployees((prev) => {
+        const updated = prev.map((item) =>
           item.id === employee.id ? { ...item, active: false } : item
-        )
-      );
+        );
+        if (status === "active") {
+          return updated.filter((item) => item.id !== employee.id);
+        }
+        return updated;
+      });
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "Request failed.";
       pushToast({
         title: "Unable to deactivate",
+        description: message,
+        variant: "error",
+      });
+    }
+  };
+
+  const handleReactivate = async (employee: Employee) => {
+    try {
+      const response = await fetch(`/api/employees/${employee.id}/activate`, {
+        method: "PATCH",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Request failed.");
+      }
+      pushToast({
+        title: "Employee reactivated",
+        description: employee.name,
+        variant: "success",
+      });
+      setEmployees((prev) => {
+        const updated = prev.map((item) =>
+          item.id === employee.id ? { ...item, active: true } : item
+        );
+        if (status === "inactive") {
+          return updated.filter((item) => item.id !== employee.id);
+        }
+        return updated;
+      });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Request failed.";
+      pushToast({
+        title: "Unable to reactivate",
         description: message,
         variant: "error",
       });
@@ -257,7 +295,15 @@ export default function EmployeesPage() {
                   >
                     Deactivate
                   </button>
-                ) : null}
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleReactivate(employee)}
+                    className="rounded-full border border-emerald-200 px-3 py-1 font-medium text-emerald-700 hover:bg-emerald-50"
+                  >
+                    Reactivate
+                  </button>
+                )}
               </div>
             </div>
           ))}
