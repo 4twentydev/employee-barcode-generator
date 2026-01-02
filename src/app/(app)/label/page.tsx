@@ -183,6 +183,46 @@ export default function LabelPage() {
     selections.length > 0 &&
     selections.every((employee) => Boolean(employee));
 
+  const handleShare = async () => {
+    if (!labelEmployee) return;
+    try {
+      const url = new URL(
+        `/print?id=${labelEmployee.id}`,
+        window.location.origin
+      ).toString();
+      if (navigator.share) {
+        await navigator.share({
+          title: "Employee barcode label",
+          text: `${formatEmployeeName(labelEmployee.name)} barcode label`,
+          url,
+        });
+        return;
+      }
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        pushToast({
+          title: "Link copied",
+          description: "Share link copied to your clipboard.",
+          variant: "success",
+        });
+        return;
+      }
+      pushToast({
+        title: "Share unavailable",
+        description: url,
+        variant: "error",
+      });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Share failed.";
+      pushToast({
+        title: "Unable to share",
+        description: message,
+        variant: "error",
+      });
+    }
+  };
+
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] xl:gap-8">
       <motion.section
@@ -303,6 +343,17 @@ export default function LabelPage() {
             </div>
           </div>
         </div>
+        {labelEmployee ? (
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={handleShare}
+              className="rounded-full border border-subtle px-4 py-2 text-xs font-semibold text-subtle transition hover:border-strong hover:text-strong"
+            >
+              Share label
+            </button>
+          </div>
+        ) : null}
         <div className="mt-6 rounded-2xl border border-subtle surface-muted px-4 py-3 text-xs text-subtle">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
             Print settings
