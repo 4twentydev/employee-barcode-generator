@@ -23,16 +23,16 @@ body {
 .print-sheet {
   width: 8.5in;
   height: 11in;
-  padding: 0.5in 0.5in 0.75in 0.5in;
+  padding: 0.55in 0.6875in;
   box-sizing: border-box;
 }
 
 .print-grid {
   display: grid;
-  grid-template-columns: repeat(2, 3in);
-  grid-auto-rows: 2in;
-  column-gap: 0.25in;
-  row-gap: 0.25in;
+  grid-template-columns: repeat(2, 3.375in);
+  grid-auto-rows: 2.333333in;
+  column-gap: 0.375in;
+  row-gap: 0.19in;
 }
 
 .print-label {

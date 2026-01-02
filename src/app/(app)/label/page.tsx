@@ -304,14 +304,14 @@ export default function LabelPage() {
           Live preview
         </p>
         <h3 className="text-xl font-semibold text-strong">
-          3&quot; x 2&quot; label
+          3-3/8&quot; x 2-1/3&quot; label
         </h3>
         <p className="mt-2 text-sm text-muted">
           Sheet layout: 2 columns × 4 rows (up to 8 labels per print).
         </p>
         <div className="mt-6 flex items-center justify-center">
           <div className="w-full max-w-[360px] rounded-2xl border border-dashed border-subtle surface-muted p-4 sm:max-w-[420px]">
-            <div className="flex aspect-[3/2] flex-col items-center justify-center gap-2 rounded-xl border border-subtle surface p-4 text-center">
+            <div className="flex aspect-[3.375/2.3333] flex-col items-center justify-center gap-2 rounded-xl border border-subtle surface p-4 text-center">
               {labelEmployee ? (
                 <>
                   <div>
@@ -362,6 +362,7 @@ export default function LabelPage() {
             <li>Paper size: Letter (8.5&quot; × 11&quot;)</li>
             <li>Scale: 100% (disable fit-to-page)</li>
             <li>Print in color off (monochrome)</li>
+            <li>Label stock: Avery 5395 (2-1/3&quot; × 3-3/8&quot;)</li>
           </ul>
         </div>
       </motion.section>
