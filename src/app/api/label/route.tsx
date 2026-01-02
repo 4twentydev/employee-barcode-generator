@@ -124,7 +124,8 @@ export async function GET(request: Request) {
           alt={`Barcode for ${barcodeValue}`}
           style={{
             width: "760px",
-            height: "auto",
+            height: "180px",
+            objectFit: "contain",
           }}
         />
       </div>

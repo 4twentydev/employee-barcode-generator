@@ -12,15 +12,16 @@ export async function GET(req: NextRequest) {
   const height = Number(searchParams.get("height") || "12"); // barcode height in "bwip units"
 
   if (!/^(%\$)?\d+$/.test(text)) {
-    return new Response("Invalid barcode text. Use %$ prefix or digits only.", {
+    return new Response("Invalid barcode text. Use digits only.", {
       status: 400,
     });
   }
+  const normalizedText = text.startsWith("%$") ? text.slice(2) : text;
 
   try {
     const png = await bwipjs.toBuffer({
       bcid: "code128",
-      text,
+      text: normalizedText,
       scale: Number.isFinite(scale) ? scale : 3,
       height: Number.isFinite(height) ? height : 12,
       includetext: false,

@@ -18,4 +18,4 @@ export const formatEmployeeName = (name: string): string => {
 };
 
 export const formatEmployeeBarcode = (employeeNumber: string): string =>
-  `%$${employeeNumber}`;
+  employeeNumber.trim();
