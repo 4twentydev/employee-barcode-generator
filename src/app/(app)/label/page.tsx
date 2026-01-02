@@ -187,7 +187,7 @@ export default function LabelPage() {
     if (!labelEmployee) return;
     try {
       const url = new URL(
-        `/print?id=${labelEmployee.id}`,
+        `/print/${labelEmployee.id}`,
         window.location.origin
       ).toString();
       if (navigator.share) {
