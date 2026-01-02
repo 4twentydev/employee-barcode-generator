@@ -17,5 +17,8 @@ export const formatEmployeeName = (name: string): string => {
   return `${lastName}, ${firstMiddle}`;
 };
 
-export const formatEmployeeBarcode = (employeeNumber: string): string =>
-  employeeNumber.trim();
+export const formatEmployeeBarcode = (employeeNumber: string): string => {
+  const trimmed = employeeNumber.trim();
+  if (!trimmed) return "";
+  return trimmed.startsWith("%$") ? trimmed : `%$${trimmed}`;
+};
