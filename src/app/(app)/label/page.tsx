@@ -186,11 +186,32 @@ export default function LabelPage() {
   const handleShare = async () => {
     if (!labelEmployee) return;
     try {
-    const params = new URLSearchParams({ ids: labelEmployee.id });
-    const url = new URL(
-      `/print?${params.toString()}`,
-      window.location.origin
-    ).toString();
+      const params = new URLSearchParams({ id: labelEmployee.id });
+      const url = new URL(
+        `/api/label?${params.toString()}`,
+        window.location.origin
+      ).toString();
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Unable to generate the label image.");
+      }
+      const blob = await response.blob();
+      const fileNameBase =
+        formatEmployeeName(labelEmployee.name)
+          .trim()
+          .replace(/[^a-z0-9]+/gi, "-")
+          .replace(/(^-|-$)/g, "") || "employee-label";
+      const file = new File([blob], `${fileNameBase}.png`, {
+        type: "image/png",
+      });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          title: "Employee barcode label",
+          text: `${formatEmployeeName(labelEmployee.name)} barcode label`,
+          files: [file],
+        });
+        return;
+      }
       if (navigator.share) {
         await navigator.share({
           title: "Employee barcode label",
@@ -202,17 +223,18 @@ export default function LabelPage() {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
         pushToast({
-          title: "Link copied",
-          description: "Share link copied to your clipboard.",
+          title: "PNG link copied",
+          description: "Label PNG link copied to your clipboard.",
           variant: "success",
         });
         return;
       }
       pushToast({
         title: "Share unavailable",
-        description: url,
+        description: "Open the label image in a new tab.",
         variant: "error",
       });
+      window.open(url, "_blank", "noopener,noreferrer");
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "Share failed.";
