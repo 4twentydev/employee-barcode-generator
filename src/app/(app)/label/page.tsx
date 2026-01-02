@@ -186,10 +186,11 @@ export default function LabelPage() {
   const handleShare = async () => {
     if (!labelEmployee) return;
     try {
-      const url = new URL(
-        `/print/${labelEmployee.id}`,
-        window.location.origin
-      ).toString();
+    const params = new URLSearchParams({ ids: labelEmployee.id });
+    const url = new URL(
+      `/print?${params.toString()}`,
+      window.location.origin
+    ).toString();
       if (navigator.share) {
         await navigator.share({
           title: "Employee barcode label",
