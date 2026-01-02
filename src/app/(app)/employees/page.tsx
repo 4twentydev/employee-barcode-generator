@@ -180,14 +180,14 @@ export default function EmployeesPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="rounded-3xl border border-black/10 bg-white p-8 shadow-sm"
+        className="rounded-3xl border border-subtle surface p-8 shadow-sm"
       >
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+            <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
               Employee Directory
             </p>
-            <h2 className="text-2xl font-semibold text-zinc-900">
+            <h2 className="text-2xl font-semibold text-strong">
               {filteredLabel} employees
             </h2>
           </div>
@@ -196,14 +196,14 @@ export default function EmployeesPage() {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search by name..."
-              className="w-48 rounded-full border border-black/10 px-4 py-2 text-sm focus:border-black/30 focus:outline-none"
+              className="w-48 rounded-full border border-subtle bg-transparent px-4 py-2 text-sm focus:border-[color:var(--accent-secondary)] focus:outline-none"
             />
             <select
               value={status}
               onChange={(event) =>
                 setStatus(event.target.value as "active" | "inactive" | "all")
               }
-              className="rounded-full border border-black/10 px-4 py-2 text-sm focus:border-black/30 focus:outline-none"
+              className="rounded-full border border-subtle bg-transparent px-4 py-2 text-sm focus:border-[color:var(--accent-secondary)] focus:outline-none"
             >
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -216,13 +216,13 @@ export default function EmployeesPage() {
           {employees.map((employee) => (
             <div
               key={employee.id}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-black/5 bg-zinc-50 px-4 py-3"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-subtle surface-muted px-4 py-3"
             >
               <div>
-                <p className="text-sm font-semibold text-zinc-900">
+                <p className="text-sm font-semibold text-strong">
                   {formatEmployeeName(employee.name)}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-muted">
                   #{employee.employeeNumber}
                 </p>
               </div>
@@ -231,7 +231,7 @@ export default function EmployeesPage() {
                   className={`rounded-full px-3 py-1 font-medium ${
                     employee.active
                       ? "bg-emerald-100 text-emerald-700"
-                      : "bg-zinc-200 text-zinc-600"
+                      : "bg-[color:var(--surface)] text-subtle"
                   }`}
                 >
                   {employee.active ? "Active" : "Inactive"}
@@ -245,7 +245,7 @@ export default function EmployeesPage() {
                       employeeNumber: employee.employeeNumber,
                     })
                   }
-                  className="rounded-full border border-black/10 px-3 py-1 font-medium text-zinc-700 hover:bg-white"
+                  className="rounded-full border border-subtle px-3 py-1 font-medium text-subtle transition hover:bg-[color:var(--surface)]"
                 >
                   Edit
                 </button>
@@ -262,7 +262,7 @@ export default function EmployeesPage() {
             </div>
           ))}
           {employees.length === 0 ? (
-            <p className="text-sm text-zinc-500">No employees found.</p>
+            <p className="text-sm text-muted">No employees found.</p>
           ) : null}
         </div>
       </motion.div>
@@ -271,24 +271,24 @@ export default function EmployeesPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="rounded-3xl border border-black/10 bg-white p-8 shadow-sm"
+        className="rounded-3xl border border-subtle surface p-8 shadow-sm"
       >
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+          <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
             {isEditing ? "Edit employee" : "Add employee"}
           </p>
-          <h3 className="text-xl font-semibold text-zinc-900">
+          <h3 className="text-xl font-semibold text-strong">
             {isEditing ? "Update record" : "Create a new record"}
           </h3>
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <label className="grid gap-2 text-sm font-medium text-zinc-700">
+          <label className="grid gap-2 text-sm font-medium text-subtle">
             Name
             <input
               value={form.name}
               onChange={(event) => setForm({ ...form, name: event.target.value })}
               placeholder="Employee name"
-              className="rounded-2xl border border-black/10 px-4 py-3 focus:border-black/30 focus:outline-none"
+              className="rounded-2xl border border-subtle bg-transparent px-4 py-3 focus:border-[color:var(--accent-secondary)] focus:outline-none"
             />
             {nameWarning ? (
               <span className="text-xs font-medium text-amber-600">
@@ -296,7 +296,7 @@ export default function EmployeesPage() {
               </span>
             ) : null}
           </label>
-          <label className="grid gap-2 text-sm font-medium text-zinc-700">
+          <label className="grid gap-2 text-sm font-medium text-subtle">
             Employee number
             <input
               value={form.employeeNumber}
@@ -305,7 +305,7 @@ export default function EmployeesPage() {
               }
               placeholder="Numbers only"
               inputMode="numeric"
-              className="rounded-2xl border border-black/10 px-4 py-3 focus:border-black/30 focus:outline-none"
+              className="rounded-2xl border border-subtle bg-transparent px-4 py-3 focus:border-[color:var(--accent-secondary)] focus:outline-none"
             />
           </label>
         </div>
@@ -314,7 +314,7 @@ export default function EmployeesPage() {
             type="button"
             onClick={submitForm}
             disabled={isSubmitting}
-            className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white hover:bg-black disabled:opacity-60"
+            className="btn-primary rounded-full px-6 py-3 text-sm font-semibold disabled:opacity-60"
           >
             {isEditing ? "Save changes" : "Add employee"}
           </button>
@@ -322,7 +322,7 @@ export default function EmployeesPage() {
             <button
               type="button"
               onClick={resetForm}
-              className="rounded-full border border-black/10 px-6 py-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+              className="rounded-full border border-subtle px-6 py-3 text-sm font-semibold text-subtle transition hover:bg-[color:var(--surface-muted)]"
             >
               Cancel
             </button>

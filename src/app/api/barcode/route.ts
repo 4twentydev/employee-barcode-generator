@@ -11,8 +11,10 @@ export async function GET(req: NextRequest) {
   const scale = Number(searchParams.get("scale") || "3");   // bar width multiplier
   const height = Number(searchParams.get("height") || "12"); // barcode height in "bwip units"
 
-  if (!/^\d+$/.test(text)) {
-    return new Response("Invalid barcode text. Digits only.", { status: 400 });
+  if (!/^(%\$)?\d+$/.test(text)) {
+    return new Response("Invalid barcode text. Use %$ prefix or digits only.", {
+      status: 400,
+    });
   }
 
   try {

@@ -6,11 +6,12 @@ import PrintSheet from "./print-sheet";
 import "./print.css";
 
 type PrintPageProps = {
-  searchParams?: { id?: string; count?: string; ids?: string };
+  searchParams?: Promise<{ id?: string; count?: string; ids?: string }>;
 };
 
 export default async function PrintPage({ searchParams }: PrintPageProps) {
-  const idsParam = searchParams?.ids;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const idsParam = resolvedSearchParams?.ids;
   if (idsParam) {
     const ids = idsParam
       .split(",")
@@ -46,15 +47,15 @@ export default async function PrintPage({ searchParams }: PrintPageProps) {
     return <PrintSheet employees={employeesInOrder} />;
   }
 
-  const employeeId = searchParams?.id;
+  const employeeId = resolvedSearchParams?.id;
 
   if (!employeeId) {
     redirect("/label");
   }
 
   const params = new URLSearchParams();
-  if (searchParams?.count) {
-    params.set("count", searchParams.count);
+  if (resolvedSearchParams?.count) {
+    params.set("count", resolvedSearchParams.count);
   }
   const suffix = params.toString();
   redirect(`/print/${employeeId}${suffix ? `?${suffix}` : ""}`);

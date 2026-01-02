@@ -75,7 +75,7 @@ function LabelInput({ index, selection, onSelect }: LabelInputProps) {
   };
 
   return (
-    <label className="text-sm font-medium text-zinc-700">
+    <label className="text-sm font-medium text-subtle">
       Label {index + 1}
       <div className="relative mt-2">
         <input
@@ -85,26 +85,26 @@ function LabelInput({ index, selection, onSelect }: LabelInputProps) {
             onSelect(null);
           }}
           placeholder="Start typing a name..."
-          className="w-full rounded-2xl border border-black/10 px-4 py-3 text-sm focus:border-black/30 focus:outline-none"
+          className="w-full rounded-2xl border border-subtle bg-transparent px-4 py-3 text-sm focus:border-[color:var(--accent-secondary)] focus:outline-none"
         />
         {isLoading ? (
-          <span className="absolute right-4 top-3 text-xs text-zinc-400">
+          <span className="absolute right-4 top-3 text-xs text-muted">
             Searching...
           </span>
         ) : null}
         {employees.length > 0 ? (
-          <div className="absolute z-10 mt-2 w-full rounded-2xl border border-black/10 bg-white p-2 shadow-lg">
+          <div className="absolute z-10 mt-2 w-full rounded-2xl border border-subtle surface p-2 shadow-lg">
             {employees.map((employee) => (
               <button
                 type="button"
                 key={employee.id}
                 onClick={() => handleSelect(employee)}
-                className="flex w-full flex-col rounded-xl px-3 py-2 text-left hover:bg-zinc-50"
+                className="flex w-full flex-col rounded-xl px-3 py-2 text-left transition hover:bg-[color:var(--surface-muted)]"
               >
-                <span className="text-sm font-semibold text-zinc-900">
+                <span className="text-sm font-semibold text-strong">
                   {formatEmployeeName(employee.name)}
                 </span>
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-muted">
                   #{employee.employeeNumber}
                 </span>
               </button>
@@ -189,23 +189,23 @@ export default function LabelPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm sm:p-8"
+        className="rounded-3xl border border-subtle surface p-6 shadow-sm sm:p-8"
       >
-        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
           Label builder
         </p>
-        <h2 className="text-2xl font-semibold text-zinc-900">
+        <h2 className="text-2xl font-semibold text-strong">
           Generate an employee barcode label
         </h2>
         <div className="mt-6 grid gap-5">
-          <label className="grid gap-2 text-sm font-medium text-zinc-700">
+          <label className="grid gap-2 text-sm font-medium text-subtle">
             Labels to print
             <select
               value={labelCount}
               onChange={(event) =>
                 setLabelCount(Number(event.target.value))
               }
-              className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm focus:border-black/30 focus:outline-none"
+              className="w-full rounded-2xl border border-subtle bg-transparent px-4 py-3 text-sm focus:border-[color:var(--accent-secondary)] focus:outline-none"
             >
               {Array.from({ length: 8 }).map((_, index) => {
                 const count = index + 1;
@@ -216,7 +216,7 @@ export default function LabelPage() {
                 );
               })}
             </select>
-            <span className="text-xs font-normal text-zinc-500">
+            <span className="text-xs font-normal text-muted">
               Prints up to 8 labels (2 columns × 4 rows) on one sheet.
             </span>
           </label>
@@ -236,7 +236,7 @@ export default function LabelPage() {
               />
             ))}
           </div>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-muted">
             Results show active employees only. Manage inactive records in
             Employees.
           </p>
@@ -247,7 +247,7 @@ export default function LabelPage() {
             type="button"
             onClick={handlePrint}
             disabled={!canPrint}
-            className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white hover:bg-black disabled:opacity-60"
+            className="btn-primary rounded-full px-6 py-3 text-sm font-semibold disabled:opacity-60"
           >
             Print labels
           </button>
@@ -258,30 +258,30 @@ export default function LabelPage() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm sm:p-8"
+        className="rounded-3xl border border-subtle surface p-6 shadow-sm sm:p-8"
       >
-        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
           Live preview
         </p>
-        <h3 className="text-xl font-semibold text-zinc-900">
+        <h3 className="text-xl font-semibold text-strong">
           3&quot; x 2&quot; label
         </h3>
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-sm text-muted">
           Sheet layout: 2 columns × 4 rows (up to 8 labels per print).
         </p>
         <div className="mt-6 flex items-center justify-center">
-          <div className="w-full max-w-[360px] rounded-2xl border border-dashed border-black/20 bg-zinc-50 p-4 sm:max-w-[420px]">
-            <div className="flex aspect-[3/2] flex-col items-center justify-center gap-2 rounded-xl border border-black/10 bg-white p-4 text-center">
+          <div className="w-full max-w-[360px] rounded-2xl border border-dashed border-subtle surface-muted p-4 sm:max-w-[420px]">
+            <div className="flex aspect-[3/2] flex-col items-center justify-center gap-2 rounded-xl border border-subtle surface p-4 text-center">
               {labelEmployee ? (
                 <>
                   <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted">
                       Employee
                     </p>
-                    <p className="text-lg font-semibold text-zinc-900">
+                    <p className="text-lg font-semibold text-strong">
                       {formatEmployeeName(labelEmployee.name)}
                     </p>
-                    <p className="text-sm text-zinc-600">
+                    <p className="text-sm text-subtle">
                       {barcodeValue}
                     </p>
                   </div>
@@ -296,15 +296,15 @@ export default function LabelPage() {
                   </div>
                 </>
               ) : (
-                <p className="text-sm text-zinc-500">
+                <p className="text-sm text-muted">
                   Select an employee to preview the label.
                 </p>
               )}
             </div>
           </div>
         </div>
-        <div className="mt-6 rounded-2xl border border-black/10 bg-zinc-50 px-4 py-3 text-xs text-zinc-600">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+        <div className="mt-6 rounded-2xl border border-subtle surface-muted px-4 py-3 text-xs text-subtle">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
             Print settings
           </p>
           <ul className="mt-2 list-disc space-y-1 pl-4">
