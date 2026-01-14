@@ -32,13 +32,34 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-sand">
         <header className="border-b border-subtle surface">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
-                barcodes
-              </p>
-              <h1 className="text-lg font-semibold text-strong">
-                Employee Barcode Labels
-              </h1>
+            <div className="flex items-center">
+              <svg
+                viewBox="0 0 120 40"
+                className="h-8 text-muted opacity-60"
+                fill="currentColor"
+                aria-label="Barcode"
+              >
+                <rect x="0" y="8" width="2" height="24" />
+                <rect x="4" y="8" width="3" height="24" />
+                <rect x="9" y="8" width="1" height="24" />
+                <rect x="12" y="8" width="4" height="24" />
+                <rect x="18" y="8" width="2" height="24" />
+                <rect x="22" y="8" width="1" height="24" />
+                <rect x="25" y="8" width="3" height="24" />
+                <rect x="30" y="8" width="2" height="24" />
+                <rect x="34" y="8" width="4" height="24" />
+                <rect x="40" y="8" width="1" height="24" />
+                <rect x="43" y="8" width="2" height="24" />
+                <rect x="47" y="8" width="3" height="24" />
+                <rect x="52" y="8" width="1" height="24" />
+                <rect x="55" y="8" width="4" height="24" />
+                <rect x="61" y="8" width="2" height="24" />
+                <rect x="65" y="8" width="1" height="24" />
+                <rect x="68" y="8" width="3" height="24" />
+                <rect x="73" y="8" width="2" height="24" />
+                <rect x="77" y="8" width="4" height="24" />
+                <rect x="83" y="8" width="1" height="24" />
+              </svg>
             </div>
             <div className="flex items-center gap-3">
               <nav className="flex gap-2 rounded-full surface-muted p-1 text-sm">
