@@ -112,7 +112,7 @@ const geistMono = Geist_Mono({
 **Company Branding:**
 ```tsx
 <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
-  Elward Systems
+  barcodes
 </p>
 ```
 
