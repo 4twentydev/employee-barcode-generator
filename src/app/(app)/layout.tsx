@@ -34,7 +34,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-accent-secondary">
-                Elward Systems
+                barcodes
               </p>
               <h1 className="text-lg font-semibold text-strong">
                 Employee Barcode Labels
